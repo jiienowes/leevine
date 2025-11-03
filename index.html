@@ -53,11 +53,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 50px;
-      flex-wrap: nowrap;
+      gap: 40px;
+      flex-wrap: wrap;
       padding: 20px;
       position: relative;
       z-index: 10;
+      max-width: 1200px;
     }
 
     .leevine-card {
@@ -70,6 +71,8 @@
       cursor: pointer;
       position: relative;
       z-index: 10;
+      flex: 1 1 220px;
+      max-width: 220px;
     }
 
     .leevine-card:hover {
@@ -78,8 +81,8 @@
     }
 
     .leevine-card img {
-      width: 250px;
-      height: 250px;
+      width: 200px;
+      height: 200px;
       border-radius: 20px;
       object-fit: cover;
       border: 4px solid #ff99c8;
@@ -87,7 +90,7 @@
 
     .name {
       margin-top: 15px;
-      font-size: 1.5em;
+      font-size: 1.3em;
       font-weight: 600;
     }
 
@@ -123,12 +126,12 @@
       }
 
       .leevine-card img {
-        width: 200px;
-        height: 200px;
+        width: 160px;
+        height: 160px;
       }
 
       .name {
-        font-size: 1.2em;
+        font-size: 1.1em;
       }
     }
   </style>
@@ -140,24 +143,36 @@
 
   <div class="gallery">
     <div class="leevine-card" onclick="playSong('song1'); dropIcons('yakultholic')">
-      <img src="leevine1.JPG" alt="Baby Leevine 1">
+      <img src="leevine1.jpg" alt="Baby Leevine 1">
       <div class="name">Yakultholic</div>
     </div>
 
     <div class="leevine-card" onclick="playSong('song2'); dropIcons('flight')">
-      <img src="leevine2.JPG" alt="Baby Leevine 2">
+      <img src="leevine2.jpg" alt="Baby Leevine 2">
       <div class="name">Flight ?!</div>
     </div>
 
     <div class="leevine-card" onclick="playSong('song3'); dropIcons('charge')">
-      <img src="leevine3.JPG" alt="Baby Leevine 3">
+      <img src="leevine3.jpg" alt="Baby Leevine 3">
       <div class="name">Full Charge</div>
+    </div>
+
+    <div class="leevine-card" onclick="playSong('song4'); dropIcons('sinkit')">
+      <img src="leevine4.jpg" alt="Baby Leevine 4">
+      <div class="name">SINKit (?)</div>
+    </div>
+
+    <div class="leevine-card" onclick="playSong('song5'); dropIcons('sleeping')">
+      <img src="leevine5.jpg" alt="Baby Leevine 5">
+      <div class="name">Sleeping Beauty</div>
     </div>
   </div>
 
   <audio id="song1" src="song1.mp3"></audio>
   <audio id="song2" src="song2.mp3"></audio>
   <audio id="song3" src="song3.mp3"></audio>
+  <audio id="song4" src="song4.mp3"></audio>
+  <audio id="song5" src="song5.mp3"></audio>
 
   <script>
     let currentAudio = null;
@@ -165,7 +180,9 @@
     const iconSets = {
       yakultholic: ["yakult.png", "yakult.png", "yakult.png"],
       flight: ["flight.png", "flight.png", "flight.png"],
-      charge: ["willie.png", "willie.png", "willie.png"]
+      charge: ["willie.png", "willie.png", "willie.png"],
+      sinkit: ["labubu.png", "labubu.png", "labubu.png"],
+      sleeping: ["auroRIA.png", "auroRIA.png", "auroRIA.png"]
     };
 
     const drawings = [
@@ -174,7 +191,7 @@
     ];
 
     const bgContainer = document.getElementById("floating-bg");
-    const totalImages = 30;
+    const totalImages = 35;
 
     for (let i = 0; i < totalImages; i++) {
       const img = document.createElement("img");
@@ -183,7 +200,7 @@
 
       img.style.left = Math.random() * 100 + "%";
       img.style.top = Math.random() * 100 + "%";
-      img.style.width = 80 + Math.random() * 60 + "px";
+      img.style.width = 70 + Math.random() * 50 + "px";
       img.style.animationDuration = 5 + Math.random() * 5 + "s";
       img.style.animationDelay = Math.random() * 5 + "s";
 
@@ -231,4 +248,3 @@
   </script>
 </body>
 </html>
-
