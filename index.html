@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Different Types of Leevine (Ybab Edition)</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Georgia", serif;
+      background: linear-gradient(135deg, #fff0f6, #ffe6f2);
+      color: #ff69b4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #2a1f2f, #3a2a3f);
+      color: #ffb6d5;
+    }
+
+    .floating-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    .floating-img {
+      position: absolute;
+      opacity: 0.25;
+      animation: floatMove 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatMove {
+      0% { transform: translate(0px, 0px) rotate(0deg); }
+      100% { transform: translate(10px, -10px) rotate(3deg); }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.3em;
+      text-shadow: 1px 1px 3px #fff;
+      text-align: center;
+      z-index: 10;
+      transition: color 0.3s;
+    }
+
+    body.dark h1 {
+      color: #ff9ccf;
+      text-shadow: 1px 1px 3px #3a2a3f;
+    }
+
+    .gallery {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 35px;
+      flex-wrap: wrap;
+      padding: 20px;
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+    }
+
+    .leevine-card {
+      background: #ffe6f2;
+      border-radius: 25px;
+      box-shadow: 0 6px 15px rgba(255, 153, 200, 0.3);
+      padding: 18px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+      flex: 1 1 200px;
+      max-width: 200px;
+    }
+
+    .leevine-card:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(255, 120, 180, 0.7);
+      background: #ffd9eb;
+    }
+
+    body.dark .leevine-card {
+      background: #3a2a3f;
+      box-shadow: 0 6px 15px rgba(255, 153, 200, 0.2);
+    }
+
+    body.dark .leevine-card:hover {
+      background: #4a324f;
+      box-shadow: 0 8px 25px rgba(255, 160, 210, 0.6);
+    }
+
+    .leevine-card img {
+      width: 180px;
+      height: 180px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 3px solid #ff99c8;
+      transition: border 0.3s;
+    }
+
+    body.dark .leevine-card img {
+      border: 3px solid #ff6fa8;
+    }
+
+    .name {
+      margin-top: 10px;
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+    .falling-icon {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 5;
+      opacity: 0.9;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .settings-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #ff99c8;
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      z-index: 20;
+      transition: background 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .settings-btn:hover {
+      background: #ff85b8;
+      transform: scale(1.1);
+    }
+
+    body.dark .settings-btn {
+      background: #ff6fa8;
+    }
+
+    body.dark .settings-btn:hover {
+      background: #ff5799;
+    }
+
+    .settings-btn img {
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+    }
+
+    /* SETTINGS MENU */
+    .settings-menu {
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      background: #ffe6f2;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      z-index: 30;
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      width: 160px;
+      transition: background 0.3s;
+    }
+
+    .settings-menu.active {
+      display: flex;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #ff69b4;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #ff99c8;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+
+    body.dark .settings-menu {
+      background: #3a2a3f;
+      color: #ffb6d5;
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-bg" id="floating-bg"></div>
+
+  <button class="settings-btn" onclick="toggleSettings()">
+    <img src="settings.png" alt="Settings">
+  </button>
+
+  <div class="settings-menu" id="settingsMenu">
+    <div class="toggle-row">
+      <span>Dark Mode</span>
+      <label class="switch">
+        <input type="checkbox" id="modeToggle" onchange="toggleMode()">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <span>Music</span>
+      <label class="switch">
+        <input type="checkbox" id="musicToggle" onchange="toggleMusic()">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <h1>Different Types of Leevine (Ybab Edition)</h1>
+
+  <div class="gallery">
+    <div class="leevine-card" onclick="playSong('song1'); dropIcons('yakultholic')">
+      <img src="leevine1.jpg" alt="Baby Leevine 1">
+      <div class="name">Yakultholic</div>
+    </div>
+
+    <div class="leevine-card" onclick="playSong('song2'); dropIcons('flight')">
+      <img src="leevine2.jpg" alt="Baby Leevine 2">
+      <div class="name">Flight ?!</div>
+    </div>
+
+    <div class="leevine-card" onclick="playSong('song3'); dropIcons('charge')">
+      <img src="leevine3.jpg" alt="Baby Leevine 3">
+      <div class="name">Full Charge</div>
+    </div>
+
+    <div class="leevine-card" onclick="playSong('song4'); dropIcons('sinkit')">
+      <img src="leevine4.jpg" alt="Baby Leevine 4">
+      <div class="name">SINKit (?)</div>
+    </div>
+
+    <div class="leevine-card" onclick="playSong('song5'); dropIcons('sleeping')">
+      <img src="leevine5.jpg" alt="Baby Leevine 5">
+      <div class="name">Sleeping Beauty</div>
+    </div>
+  </div>
+
+  <audio id="song1" src="song1.mp3"></audio>
+  <audio id="song2" src="song2.mp3"></audio>
+  <audio id="song3" src="song3.mp3"></audio>
+  <audio id="song4" src="song4.mp3"></audio>
+  <audio id="song5" src="song5.mp3"></audio>
+  <audio id="bgMusic" src="fallingforyou.mp3" loop></audio>
+
+  <script>
+    let currentAudio = null;
+    const bgMusic = document.getElementById("bgMusic");
+    const settingsMenu = document.getElementById("settingsMenu");
+    const modeToggle = document.getElementById("modeToggle");
+    const musicToggle = document.getElementById("musicToggle");
+
+    const iconSets = {
+      yakultholic: ["yakult.png"],
+      flight: ["flight.png"],
+      charge: ["willie.png"],
+      sinkit: ["labubu.png"],
+      sleeping: ["auroRIA.png"]
+    };
+
+    const drawings = [
+      "araykoh.png", "bitch.png", "hello.png",
+      "alarm.png", "boo.png", "sleep.png", "hearts.png"
+    ];
+
+    const bgContainer = document.getElementById("floating-bg");
+    const totalImages = 35;
+
+    for (let i = 0; i < totalImages; i++) {
+      const img = document.createElement("img");
+      img.src = drawings[i % drawings.length];
+      img.classList.add("floating-img");
+      img.style.left = Math.random() * 100 + "%";
+      img.style.top = Math.random() * 100 + "%";
+      img.style.width = 60 + Math.random() * 40 + "px";
+      img.style.animationDuration = 5 + Math.random() * 5 + "s";
+      img.style.animationDelay = Math.random() * 5 + "s";
+      bgContainer.appendChild(img);
+    }
+
+    function toggleSettings() {
+      settingsMenu.classList.toggle("active");
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+      modeToggle.checked = document.body.classList.contains("dark");
+    }
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.checked = true;
+      } else {
+        bgMusic.pause();
+        musicToggle.checked = false;
+      }
+    }
+
+    function playSong(songId) {
+      if (currentAudio && currentAudio.id === songId && !currentAudio.paused) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        return;
+      }
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      currentAudio = document.getElementById(songId);
+      currentAudio.play();
+    }
+
+    function dropIcons(type) {
+      const icons = iconSets[type];
+      const screenWidth = window.innerWidth;
+
+      for (let i = 0; i < 15; i++) {
+        const icon = document.createElement("img");
+        icon.src = icons[Math.floor(Math.random() * icons.length)];
+        icon.classList.add("falling-icon");
+
+        let x;
+        do {
+          x = Math.random() * screenWidth;
+        } while (x > screenWidth * 0.3 && x < screenWidth * 0.7);
+
+        icon.style.left = `${x}px`;
+        icon.style.top = `${Math.random() * -100}px`;
+        icon.style.animationDuration = `${2 + Math.random() * 3}s`;
+        icon.style.width = `${25 + Math.random() * 25}px`;
+        icon.style.height = icon.style.width;
+
+        document.body.appendChild(icon);
+        setTimeout(() => icon.remove(), 5000);
+      }
+    }
+  </script>
+</body>
+</html>
